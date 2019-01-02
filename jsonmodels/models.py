@@ -68,6 +68,10 @@ class Base(six.with_metaclass(JsonmodelMeta, object)):
 
         raise errors.FieldNotFound('Field not found', field_name)
 
+    def __deepcopy__(self, memo):
+        # As per: https://github.com/beregond/jsonmodels/issues/127
+        return self.__class__(**self.to_struct())
+
     def __iter__(self):
         """Iterate through fields and values."""
         for name, field in self.iterate_over_fields():
